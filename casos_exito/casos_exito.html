@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casos de éxito | DataForge</title>
+<meta name="description" content="Resultados medibles en retail, salud y logística gracias a la analítica de datos y el Machine Learning.">
+<meta name="theme-color" content="#252e67">
+<link rel="icon" type="image/png" href="../assets/Header/icono.png">
+<style>
+/* ==========================================================================
+   1. Tokens
+   ========================================================================== */
+:root{
+  --navy:#252e67;
+  --navy-deep:#17204d;
+  --orange:#ff9d18;
+  --orange-hover:#ffac40;
+  --teal:#08709b;
+  --muted:#607087;
+  --ink-soft:#526077;
+  --line:#dfe5eb;
+  --bg:#f4f7f9;
+
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:Arial,Helvetica,sans-serif;
+
+  --header-h:72px;      /* alto del header: lo usan el scroll */
+  --footer-h:260px;     /* valor de respaldo; el JS lo actualiza con la medida real */
+  --section-y:64px;     /* aire vertical de cada sección (arriba y abajo) */
+  --wrap:950px;
+}
+@media(max-width:700px){:root{--section-y:48px}}
+
+/* ==========================================================================
+   2. Base
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  /* UN solo desplazamiento para todos los anclajes (antes se sumaban dos: 72 + 72).
+     El -1px hace que la sección quede apenas debajo del borde del header, sin rendija. */
+  scroll-padding-top:calc(var(--header-h) - 1px);
+  -webkit-text-size-adjust:100%;
+}
+body{
+  margin:0;
+  background:#fff;
+  color:var(--navy);
+  font:400 16px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,p,ul,ol,blockquote,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.hero :focus-visible,
+.site-footer :focus-visible,
+.card--featured :focus-visible,
+.case-panel :focus-visible{outline-color:var(--orange)}
+
+.skip-link{
+  position:absolute;left:12px;top:-64px;z-index:200;
+  padding:10px 16px;border-radius:8px;
+  background:var(--navy);color:#fff;font-size:14px;font-weight:700;
+}
+.skip-link:focus{top:12px}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ==========================================================================
+   3. Botones
+   ========================================================================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:46px;padding:0 28px;
+  border:1px solid transparent;border-radius:10px;
+  font:700 14px/1 var(--sans);white-space:nowrap;
+  transition:background-color .15s,border-color .15s,color .15s;
+}
+.btn--sm{min-height:36px;padding:0 18px;border-radius:8px;font-size:13px}
+.btn--orange{background:var(--orange);border-color:var(--orange);color:var(--navy-deep)}
+.btn--orange:hover{background:var(--orange-hover);border-color:var(--orange-hover)}
+.btn--ghost{border-color:#e3e8ed;color:var(--navy)}
+.btn--ghost:hover{border-color:#c5cfda;background:#f7f9fb}
+.btn--light{border-color:rgba(255,255,255,.4);color:#fff}
+.btn--light:hover{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.1)}
+
+/* ==========================================================================
+   4. Header
+   ========================================================================== */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  height:var(--header-h);
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:24px;
+  padding:0 max(20px,4.9%);
+  background:#fff;border-bottom:1px solid #edf0f3;
+}
+.logo{display:inline-flex;align-items:center;gap:10px;justify-self:start}
+.logo-img{height:48px;width:auto;display:block}
+
+.nav{display:flex;gap:32px;font-size:14px;color:var(--ink-soft)}
+.nav-link{
+  position:relative;
+  display:inline-flex;flex-direction:column;align-items:center;
+  padding:10px 0;
+  transition:color .15s;
+}
+/* Reserva el ancho del texto en negrita para que el menú no "salte" al activarse */
+.nav-link::after{
+  content:attr(data-label);
+  height:0;overflow:hidden;visibility:hidden;
+  font-weight:700;pointer-events:none;
+}
+/* Subrayado del ítem activo */
+.nav-link::before{
+  content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;
+  background:var(--orange);transform:scaleX(0);transition:transform .2s ease;
+}
+.nav-link:hover{color:var(--navy)}
+.nav-link.is-active{color:var(--navy);font-weight:700}
+.nav-link.is-active::before{transform:scaleX(1)}
+
+.nav-portal,.nav-cta{display:none}
+
+.header-actions{display:flex;align-items:center;gap:12px;justify-self:end}
+
+.menu-toggle{
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  width:40px;height:40px;padding:0;
+  border:1px solid #e3e8ed;border-radius:8px;background:#fff;
+}
+.menu-toggle span{display:block;width:18px;height:2px;border-radius:1px;background:var(--navy);transition:transform .2s,opacity .2s}
+.menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+@media(max-width:980px){
+  .site-header{grid-template-columns:1fr auto;padding:0 20px}
+  .header-actions .btn--ghost{display:none}
+  .menu-toggle{display:inline-flex}
+
+  .nav{
+    display:none;
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;gap:0;
+    padding:4px 20px 20px;
+    background:#fff;border-bottom:1px solid #edf0f3;
+    box-shadow:0 14px 24px rgba(23,32,77,.08);
+    font-size:16px;
+  }
+  .nav.is-open{display:flex}
+  .nav-link,.nav-portal{
+    display:flex;align-items:flex-start;padding:15px 0;
+    border-bottom:1px solid #f0f3f6;
+  }
+  .nav-link::before{display:none}
+  .nav-portal{display:flex;color:var(--ink-soft)}
+  .nav-cta{margin-top:16px}
+}
+@media(max-width:380px){
+  .header-actions .btn--orange{display:none}
+  .nav-cta{display:inline-flex}
+}
+
+/* ==========================================================================
+   5. Hero
+   ========================================================================== */
+.hero{
+  display:flex;align-items:center;
+  padding:56px 0;
+  background:var(--navy);color:#fff;
+  min-height:clamp(560px,calc(100vh - var(--header-h)),760px);
+  min-height:clamp(560px,calc(100svh - var(--header-h)),760px);
+}
+.hero-inner{
+  width:min(960px,100% - 40px);margin-inline:auto;
+  display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;
+}
+.eyebrow{margin-bottom:14px;color:var(--orange);font-size:13px;font-weight:700}
+.hero h1{
+  margin-bottom:20px;
+  font:700 clamp(34px,4.6vw,46px)/1.06 var(--serif);
+  letter-spacing:-.03em;text-wrap:balance;
+}
+.hero h1 em{display:block;font-weight:400;color:#cbd5e8}
+.lead{max-width:490px;margin-bottom:30px;color:#c8d0e2;font-size:16px;line-height:1.6;text-wrap:pretty}
+.hero-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:44px}
+
+.stats{display:flex;align-items:flex-start}
+.stat{padding:0 20px;border-left:1px solid rgba(255,255,255,.16)}
+.stat:first-child{padding-left:0;border-left:0}
+.stat-number{font:400 22px/1.2 var(--serif)}
+.stat-label{max-width:16ch;margin-top:3px;color:#a9b4cc;font-size:12px;line-height:1.3}
+
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 380px;
+}
+.hero-visual img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  object-fit: contain;
+}
+.node{fill:#117b9d}
+.node.orange{fill:#ff9d18}
+.node.dim{fill:#3e4c83}
+.net-line{stroke:#6171a4;stroke-width:1.2;fill:none;opacity:.58}
+.net-dash{stroke:#526293;stroke-width:1;stroke-dasharray:4 6;fill:none;opacity:.28}
+.panel{fill:#2e3975;stroke:#526197;stroke-width:1}
+.bar-blue{fill:#197c9d}
+.bar-orange{fill:#ff9d18}
+.bar-slate{fill:#587e9e}
+
+@media(max-width:850px){
+  .hero{
+    min-height:calc(100vh - var(--header-h));
+    min-height:calc(100svh - var(--header-h));
+  }
+  .hero-inner{grid-template-columns:1fr}
+  .hero-visual{display:none}
+}
+@media(max-width:520px){
+  .hero-buttons{flex-direction:column}
+  .hero-buttons .btn{width:100%}
+  .stat{padding:0 14px}
+}
+
+/* ==========================================================================
+   6. Estructura común de secciones
+   ========================================================================== */
+.section{padding-block:var(--section-y)}
+.section--tint{background:var(--bg)}
+/* Dos secciones grises seguidas se separan con una línea fina */
+.section--tint + .section--tint{border-top:1px solid var(--line)}
+.section--flush-end{padding-bottom:0}
+
+.wrap{width:min(var(--wrap),100% - 40px);margin-inline:auto}
+.section-head{margin-bottom:36px}
+.kicker{margin-bottom:12px;color:var(--muted);font-size:13px;font-weight:700}
+.section-title{
+  max-width:650px;
+  font:700 clamp(25px,3.4vw,31px)/1.15 var(--serif);
+  letter-spacing:-.015em;text-wrap:balance;
+}
+.section-intro{max-width:590px;margin-top:16px;color:var(--muted);font-size:15px;line-height:1.6;text-wrap:pretty}
+
+/* ==========================================================================
+   7. Servicios
+   ========================================================================== */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+  display:flex;flex-direction:column;min-height:221px;
+  padding:24px 22px 20px;
+  background:#fff;border:1px solid #e1e6ea;border-radius:11px;
+}
+.card--featured{background:var(--navy);border-color:var(--navy);color:#fff}
+.card-icon{
+  display:grid;place-items:center;width:40px;height:40px;margin-bottom:18px;
+  border-radius:11px;background:#e8f1f5;
+}
+.card-icon svg{
+  width:20px;height:20px;fill:none;stroke:var(--teal);
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+}
+.card:nth-child(3) .card-icon{background:#fff0dd}
+.card:nth-child(3) .card-icon svg{stroke:var(--orange)}
+.card:nth-child(4) .card-icon{background:#ececf7}
+.card--featured .card-icon{background:#49466c}
+.card--featured .card-icon svg{stroke:var(--orange)}
+.card-title{margin-bottom:10px;font:700 17px/1.25 var(--serif)}
+.card-text{color:var(--muted);font-size:13.5px;line-height:1.55}
+.card--featured .card-text{color:#b9c4d9}
+.card-link{
+  align-self:flex-start;margin-top:auto;padding:14px 0 0;
+  border:0;background:none;text-align:left;
+  color:#076b9a;font-size:13px;font-weight:700;
+}
+.card-link:hover{text-decoration:underline;text-underline-offset:3px}
+.card--featured .card-link{color:var(--orange)}
+
+@media(max-width:850px){.services-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:570px){.services-grid{grid-template-columns:1fr}.card{min-height:0}}
+
+/* ==========================================================================
+   8. Casos de éxito (carrusel con radios, sin JS)
+   ========================================================================== */
+.carousel{position:relative}
+.carousel input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+/* Las 3 diapositivas ocupan la misma celda: la altura la marca la más alta */
+.slides{display:grid}
+.slide{
+  grid-area:1/1;
+  display:grid;grid-template-columns:47% 53%;min-height:300px;
+  overflow:hidden;background:#fff;border:1px solid #dfe5ea;border-radius:15px;
+  opacity:0;visibility:hidden;
+  transition:opacity .2s ease,visibility 0s linear .2s;
+}
+#case1:checked ~ .slides .s1,
+#case2:checked ~ .slides .s2,
+#case3:checked ~ .slides .s3{opacity:1;visibility:visible;transition-delay:0s}
+
+.case-panel{
+  display:flex;flex-direction:column;gap:12px;padding:44px 40px;
+  background:linear-gradient(150deg,#26356f 0%,#086b91 100%);color:#fff;
+}
+.case-tag{color:#b9d4e1;font-size:11.5px;letter-spacing:.06em}
+.case-title{font:700 22px/1.2 var(--serif);text-wrap:balance}
+.case-metrics{display:flex;flex-wrap:wrap;gap:16px 40px;margin-top:auto;padding-top:28px}
+.case-metric-number{font:400 24px/1.2 var(--serif)}
+.case-metric-label{margin-top:4px;color:#b7d3df;font-size:12px}
+
+.case-voice{display:flex;flex-direction:column;padding:48px 40px 32px}
+.quote{max-width:450px;color:#303b68;font:italic 400 17.5px/1.5 var(--serif)}
+.case-person{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:24px}
+.avatar{
+  display:grid;place-items:center;flex:none;width:40px;height:40px;
+  border-radius:50%;background:#207c9d;color:#fff;font-size:13px;
+}
+.person-name{color:#1d285a;font-size:13px;font-weight:700}
+.person-role{margin-top:2px;color:#647287;font-size:12px}
+
+.dots{display:flex;justify-content:center;gap:6px;margin-top:22px}
+.dot{position:relative;width:28px;height:28px;border-radius:50%;cursor:pointer}
+.dot::before{
+  content:"";position:absolute;inset:9px;border-radius:50%;
+  background:#c9d1dd;transition:background-color .2s,transform .2s;
+}
+.dot:hover::before{background:#9aa6bb}
+#case1:checked ~ .dots label[for="case1"]::before,
+#case2:checked ~ .dots label[for="case2"]::before,
+#case3:checked ~ .dots label[for="case3"]::before{background:var(--navy);transform:scale(1.25)}
+#case1:focus-visible ~ .dots label[for="case1"],
+#case2:focus-visible ~ .dots label[for="case2"],
+#case3:focus-visible ~ .dots label[for="case3"]{outline:2px solid var(--teal);outline-offset:1px}
+
+@media(max-width:800px){
+  .slide{grid-template-columns:1fr}
+  .case-panel{padding:32px}
+  .case-voice{padding:32px}
+}
+
+/* ==========================================================================
+   9. Nosotros
+   ========================================================================== */
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:48px}
+.member{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:20px}
+.member img{width:110px;height:110px;border-radius:50%;object-fit:cover;background:#e8eef3}
+.member-name{margin-bottom:8px;font-size:15px;font-weight:700}
+.member-bio{color:var(--muted);font-size:13.5px;line-height:1.55}
+
+.process{margin-top:64px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+.step-number{
+  display:grid;place-items:center;width:40px;height:40px;margin-bottom:18px;
+  border-radius:50%;background:var(--navy);color:#fff;font:400 15px/1 var(--serif);
+}
+.step-title{margin-bottom:8px;font-size:15px;font-weight:700}
+.step-text{color:var(--muted);font-size:13.5px;line-height:1.55}
+
+.stats-band{margin-top:56px;background:var(--navy);color:#fff}
+.stats-band .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.band-item{padding:30px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.14)}
+.band-item:last-child{border-right:0}
+.band-item strong{display:block;color:var(--orange);font:400 30px/1.2 var(--serif)}
+.band-item span{display:block;margin-top:6px;color:#bcc6db;font-size:12px}
+
+@media(max-width:900px){
+  .team{grid-template-columns:1fr;gap:28px}
+  .steps{grid-template-columns:1fr 1fr;gap:36px 32px}
+  .stats-band .wrap{grid-template-columns:1fr 1fr}
+  .band-item:nth-child(2n){border-right:0}
+  .band-item:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.14)}
+}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* ==========================================================================
+   10. Clientes
+   ========================================================================== */
+.logo-box{
+  display:grid;place-items:center;height:287px;padding:28px 35px;
+  overflow:hidden;background:#fff;border:1px solid #e1e6ea;border-radius:15px;
+}
+.logo-box img{width:100%;height:100%;object-fit:contain}
+@media(max-width:700px){
+  .logo-box{height:auto;padding:20px}
+  .logo-box img{height:auto}
+}
+
+/* ==========================================================================
+   11. Blog
+   ========================================================================== */
+.blog-list{display:flex;align-items:center;gap:24px}
+.posts{flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.post{display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid #e1e6ea;border-radius:15px}
+.post img{width:100%;height:120px;object-fit:cover}
+.post-body{display:flex;flex-direction:column;flex:1;padding:20px 18px 16px}
+.post-title{margin-bottom:10px;font-size:15px;font-weight:700;line-height:1.3;text-wrap:balance}
+.post-text{color:var(--muted);font-size:13.5px;line-height:1.55}
+.post-date{margin-top:auto;padding-top:16px;color:var(--muted);font-size:12px;text-align:right}
+
+.posts-next{
+  display:grid;place-items:center;flex:none;width:48px;height:48px;padding:0;
+  border:2px solid var(--navy);border-radius:50%;background:transparent;color:var(--navy);
+  transition:background-color .15s,color .15s;
+}
+.posts-next:hover{background:var(--navy);color:#fff}
+.posts-next svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+@media(max-width:900px){.posts-next{display:none}}
+@media(max-width:720px){.posts{grid-template-columns:1fr}}
+
+/* ==========================================================================
+   12. Contacto
+   ========================================================================== */
+/* Con --footer-h (medido por JS) contacto + footer llenan exactamente la pantalla,
+   así al pulsar "Contáctanos" la sección sube hasta el header en vez de quedarse corta. */
+.contact{
+  display:flex;flex-direction:column;justify-content:center;
+  min-height:max(420px,calc(100vh - var(--header-h) - var(--footer-h)));
+  min-height:max(420px,calc(100svh - var(--header-h) - var(--footer-h)));
+}
+.contact-form{
+  display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;
+  padding:32px 40px;background:var(--bg);border-radius:16px;
+}
+.field{display:flex;flex-direction:column}
+.field--full{grid-column:1/-1}
+.field label{margin-bottom:6px;font:700 16px/1.2 var(--serif)}
+.field input,
+.field textarea{
+  width:100%;padding:8px 0 9px;
+  border:0;border-bottom:1px solid #8b96a8;border-radius:0;background:transparent;
+  color:var(--navy);font-size:14px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field textarea{min-height:64px;resize:vertical}
+.field input::placeholder,
+.field textarea::placeholder{color:#66738a;opacity:1}
+.field input:focus,
+.field textarea:focus{outline:0;border-bottom-color:var(--navy);box-shadow:0 1px 0 var(--navy)}
+.form-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.form-actions .btn{padding:0 36px}
+
+@media(max-width:700px){
+  .contact-form{grid-template-columns:1fr;gap:22px;padding:24px 20px}
+  .form-actions .btn{width:100%}
+}
+
+/* ==========================================================================
+   13. Footer
+   ========================================================================== */
+.site-footer{padding-top:48px;background:var(--navy);color:#b8c0d3}
+.footer-grid{
+  width:min(var(--wrap),100% - 40px);margin-inline:auto;
+  display:grid;grid-template-columns:220px repeat(3,1fr);gap:40px;
+}
+.footer-desc{max-width:210px;margin-top:14px;font-size:13px;line-height:1.65}
+.footer-title{margin-bottom:14px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.08em}
+.footer-links{display:flex;flex-direction:column;gap:10px;font-size:13.5px}
+.footer-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.footer-bottom{
+  width:min(var(--wrap),100% - 40px);margin:36px auto 0;padding:18px 0 24px;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;
+  border-top:1px solid rgba(255,255,255,.14);font-size:12px;
+}
+@media(max-width:850px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-brand{grid-column:1/-1}
+}
+.footer-bottom a{text-decoration:underline;text-underline-offset:3px}.footer-bottom a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<header class="site-header" id="site-header">
+  <a class="logo" href="../home/home.html#inicio" aria-label="DataForge, ir al inicio">
+    <img class="logo-img" src="../assets/Header/logo.webp" alt="DataForge">
+  </a>
+
+  <nav class="nav" id="site-nav" aria-label="Principal">
+    <a class="nav-link" data-section="servicios" data-label="Servicios" href="../servicios/servicios.html#servicios">Servicios</a>
+    <a class="nav-link is-active" aria-current="page" data-section="casos-exito" data-label="Casos de éxito" href="casos_exito.html#casos-exito">Casos de éxito</a>
+    <a class="nav-link" data-section="nosotros" data-label="Nosotros" href="../nosotros/nosotros.html#nosotros">Nosotros</a>
+    <a class="nav-link" data-section="clientes" data-label="Clientes" href="../clientes/clientes.html#clientes">Clientes</a>
+    <a class="nav-link" data-section="blog" data-label="Blog" href="../blog/blog.html#blog">Blog</a>
+    <a class="nav-portal" href="../home/portal.html">Portal cliente</a>
+    <a class="nav-cta btn btn--orange" href="../home/contacto.html#contacto">Contáctanos</a>
+  </nav>
+
+  <div class="header-actions">
+    <a class="btn btn--sm btn--ghost" href="../home/portal.html">Portal cliente</a>
+    <a class="btn btn--sm btn--orange" href="../home/contacto.html#contacto">Contáctanos</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<main id="contenido">
+
+  <!-- Casos de éxito -->
+  <section class="section section--tint" id="casos-exito" aria-labelledby="casos-title">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="kicker">Casos de éxito</p>
+        <h1 class="section-title" id="casos-title">Resultados medibles, no solo reportes bonitos</h1>
+      </header>
+
+      <div class="carousel">
+        <input type="radio" name="cases" id="case1" checked>
+        <input type="radio" name="cases" id="case2">
+        <input type="radio" name="cases" id="case3">
+
+        <div class="slides">
+          <article class="slide s1">
+            <div class="case-panel">
+              <p class="case-tag">RETAIL · CADENA REGIONAL</p>
+              <h3 class="case-title">Predicción de demanda para 40 tiendas</h3>
+              <div class="case-metrics">
+                <div><div class="case-metric-number">−23%</div><div class="case-metric-label">quiebres de stock</div></div>
+                <div><div class="case-metric-number">+15%</div><div class="case-metric-label">margen por tienda</div></div>
+              </div>
+            </div>
+            <div class="case-voice">
+              <blockquote class="quote">“En cuatro semanas teníamos un modelo de demanda funcionando. Dejamos de comprar por intuición y empezamos a comprar con datos.”</blockquote>
+              <div class="case-person"><div class="avatar" aria-hidden="true">MR</div><div><div class="person-name">María Rodríguez</div><div class="person-role">Gerenta de Operaciones</div></div></div>
+            </div>
+          </article>
+
+          <article class="slide s2">
+            <div class="case-panel">
+              <p class="case-tag">SALUD · RED DE CLÍNICAS</p>
+              <h3 class="case-title">Predicción de demanda de citas médicas</h3>
+              <div class="case-metrics">
+                <div><div class="case-metric-number">−18%</div><div class="case-metric-label">tiempo de espera</div></div>
+                <div><div class="case-metric-number">+27%</div><div class="case-metric-label">precisión en la planificación</div></div>
+              </div>
+            </div>
+            <div class="case-voice">
+              <blockquote class="quote">“Ahora podemos anticipar los días de mayor demanda y organizar mejor nuestros recursos antes de que lleguen los pacientes.”</blockquote>
+              <div class="case-person"><div class="avatar" aria-hidden="true">MR</div><div><div class="person-name">Miguel Romero</div><div class="person-role">Gerente de Operaciones</div></div></div>
+            </div>
+          </article>
+
+          <article class="slide s3">
+            <div class="case-panel">
+              <p class="case-tag">LOGÍSTICA · EMPRESA NACIONAL</p>
+              <h3 class="case-title">Automatización de órdenes de servicio</h3>
+              <div class="case-metrics">
+                <div><div class="case-metric-number">−45%</div><div class="case-metric-label">tiempo operativo</div></div>
+                <div><div class="case-metric-number">+35%</div><div class="case-metric-label">pedidos procesados</div></div>
+              </div>
+            </div>
+            <div class="case-voice">
+              <blockquote class="quote">“Reducimos las tareas repetitivas del equipo y ahora podemos detectar los pedidos críticos antes de que se conviertan en retrasos.”</blockquote>
+              <div class="case-person"><div class="avatar" aria-hidden="true">MR</div><div><div class="person-name">Martín Reategui</div><div class="person-role">Gerente de Operaciones</div></div></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="dots">
+          <label class="dot" for="case1" aria-label="Ver caso de Retail"></label>
+          <label class="dot" for="case2" aria-label="Ver caso de Salud"></label>
+          <label class="dot" for="case3" aria-label="Ver caso de Logística"></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="../home/home.html#inicio" aria-label="DataForge, ir al inicio">
+        <img class="logo-img" src="../assets/Header/logo.webp" alt="DataForge">
+      </a>
+      <p class="footer-desc">Analítica de datos, Machine Learning y dashboards para empresas que quieren decidir con evidencia.</p>
+    </div>
+    <div>
+      <p class="footer-title">SERVICIOS</p>
+      <ul class="footer-links">
+        <li><a href="../servicios/servicios.html#servicios">Dashboards &amp; BI</a></li>
+        <li><a href="../servicios/servicios.html#servicios">Analítica descriptiva</a></li>
+        <li><a href="../servicios/servicios.html#servicios">Machine Learning</a></li>
+        <li><a href="../servicios/servicios.html#servicios">MLOps</a></li>
+        <li><a href="../servicios/servicios.html#servicios">Data Strategy</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">CASOS DE ÉXITO</p>
+      <ul class="footer-links">
+        <li><a href="casos_exito.html#casos-exito">Retail</a></li>
+        <li><a href="casos_exito.html#casos-exito">Salud</a></li>
+        <li><a href="casos_exito.html#casos-exito">Logística</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">NOSOTROS</p>
+      <ul class="footer-links">
+        <li><a href="../nosotros/nosotros.html#nosotros">Equipo</a></li>
+        <li><a href="../nosotros/nosotros.html#nosotros">Metodología</a></li>
+        <li><a href="../blog/blog.html#blog">Blog / Recursos</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DataForge Analytics. Todos los derechos reservados.</span>
+    <span>Términos · Privacidad · Seguridad de datos · <a href="../home/mapa_sitio.html">Mapa del sitio</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const header = document.getElementById('site-header');
+  const nav    = document.getElementById('site-nav');
+  const toggle = header.querySelector('.menu-toggle');
+  const footer = document.querySelector('.site-footer');
+
+  /* ---- Menú móvil ---------------------------------------------------- */
+  function setMenu(open) {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  }
+  toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  document.addEventListener('click', e => { if (!header.contains(e.target)) setMenu(false); });
+  matchMedia('(min-width:981px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+
+  /* Cierra el menú móvil al elegir un enlace */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"], .nav a');
+    if (a) setMenu(false);
+  });
+
+  /* ---- Altura real del footer (para que Contacto + footer llenen la pantalla) */
+  if (footer && 'ResizeObserver' in window) {
+    new ResizeObserver(() => {
+      document.documentElement.style.setProperty('--footer-h', footer.offsetHeight + 'px');
+    }).observe(footer);
+  }
+
+  /* ---- Formulario (prototipo): no envía ni recarga la página ---------- */
+  document.querySelector('.contact-form')?.addEventListener('submit', e => e.preventDefault());
+})();
+</script>
+</body>
+</html>
